@@ -97,7 +97,10 @@ module.exports = function (
 		this._send(new protocol.Auth(0, id), cb)
 	}
 
-	Session.prototype.close = function () {
+	Session.prototype.close = function (cb) {
+		if (cb) {
+			this.once('close', cb);
+		}
 		this.watcher.reset()
 		this._send(protocol.Close.instance, retry.no(), this.onClose)
 	}
@@ -486,6 +489,7 @@ module.exports = function (
 
 	function onClose() {
 		this.closed = true
+		this.emit('close');
 		this._reset()
 	}
 
