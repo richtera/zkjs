@@ -359,7 +359,12 @@ module.exports = function (
 	// internal API
 
 	Session.prototype._chroot = function (path) {
-		path = paths.join(this.root, path).replace(/^\/\//, '/')
+		if (path.charAt(0) !== '/') {
+		// We don't use paths.join here, because under windows this will use \ instead of /.
+		// Manually joining the paths is more reliable than trying to use paths.join and then
+		// replacing \ with /.
+			path = (this.root + '/' + path).replace(/\/\//, '/');
+		}
 		if (path.length > 1 && path[path.length - 1] === '/') {
 			path = path.substring(0, path.length - 1)
 		}
