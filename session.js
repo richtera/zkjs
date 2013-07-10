@@ -220,7 +220,7 @@ module.exports = function (
 				if (!err && watch) {
 					this.watcher.addDataWatch(path, watch)
 				}
-				cb(err, data, stat)
+				cb(err, data, stat, path)
 			}.bind(this)
 		)
 	}
